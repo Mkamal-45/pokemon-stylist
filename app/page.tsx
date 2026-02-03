@@ -4,9 +4,27 @@ import React, {useState} from "react";
 
 export default function Home(){
   const [query, setQuery]= useState("");
-  const handleSearch= (e: React.FormEvent) => {
+  const handleSearch= async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("The Stylist is looking for: " + query);
+    console.log("1. Starting API call for:", query);
+    try{
+      const response= await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${query.toLowerCase()}`
+      );
+      console.log("2. Response received:",  response);
+      console.log("3. Response ok?", response.ok);
+      const data= await response.json();
+      console.log("4. Data received:", data);
+      console.log("5. Pokemon name:", data.name);
+      console.log("6. Pokemon sprite:", data.sprites.front_default);
+      console.log("7. Pokemon types:", data.types.map((t:any)=> t.type.name));
+      console.log("8. Pokemon ID:", data.id);
+      alert(`Found ${data.name}! Check console for all the details.`);
+    } catch(error){
+      console.log("Error:", error);
+      alert("Pokemon not found! No fakemon aloud.");
+    }
+
   };
 
   return(
@@ -26,6 +44,11 @@ export default function Home(){
         Analyze
       </button>
     </form>
+    <div className="mt-8 text center text-gray-400">
+      <p className="font-bold text-white mb-2">Testing</p>
+      <p>Page Inspect</p>
+      <p>Test with valid and fakemons</p>
+    </div>
   </main>
 
   );
