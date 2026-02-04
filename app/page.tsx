@@ -20,7 +20,7 @@ export default function Home(){
       const response= await fetch(
         `https://pokeapi.co/api/v2/pokemon/${query.toLowerCase()}`
       );
-      console.log("Response receive:", response.ok?);
+      console.log("Response received:", response.ok);
       if (!response.ok){
         throw new Error("PKMN not found");
       }
@@ -29,7 +29,7 @@ export default function Home(){
       const pokemonData: Pokemon= {
         name: data.name,
         sprite: data.sprites.front_default,
-        types: data.types.map((t:any)=> t.type.name),
+        types: data.types.map((t: any)=> t.type.name),
         id: data.id,
       };
       console.log("PKMN data extracted:", pokemonData);
@@ -60,10 +60,31 @@ export default function Home(){
         Analyze
       </button>
     </form>
+    {pokemon &&(
+      <div className="border-2 border-blue-500 rounded-lg p-8 bg-gray-900 max-w-md w-full">
+        <div className="flex flex-col items-center">
+          <img src={pokemon.sprite} alt={pokemon.name} className="w-48 h-48"/>
+          <h2 className="text-3xl font-bold capitalize mt-4">
+            {pokemon.name}
+          </h2>
+          <p className="text-gray-400 text-lg">
+            #{pokemon.id.toString().padStart(3, '0')}
+          </p>
+          <div className="flex gap-2 mt-4">
+            {pokemon.types.map((type, index)=>(
+              <span key={index} className="px-4 py-2 bg-blue-600 rounded-full capitalize font-semibold">
+                {type}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    )}
     <div className="mt-8 text center text-gray-400">
       <p className="font-bold text-white mb-2">Testing</p>
       <p>Page Inspect</p>
       <p>Test with valid and fakemons</p>
+      <p></p>
     </div>
   </main>
 
