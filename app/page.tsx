@@ -13,6 +13,8 @@ export default function Home(){
   const [query, setQuery]= useState("");
   const [currentPokemon, setCurrentPokemon]= useState<Pokemon | null>(null);
   const [team ,setTeam]= useState<Pokemon[]>([]);
+  const [storeLinkInput, setStoreLinkInput]= useState("");
+  const[storeLinks, setStoreLinks]=useState<string[]>([]);
   const handleSearch= async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Starting API call for:", query);
@@ -42,6 +44,34 @@ export default function Home(){
     }
 
   };
+
+  const addStoreLink=()=>{
+    if (!storeLinkInput){
+      alert("Please enter a link to your favorite store!");
+      return;
+    }
+    if(!storeLinkInput.startsWith('http://')&& !storeLinkInput.startsWith('https://')){
+      alert("Please enter a valid website url");
+      return;
+    }
+    if (storeLinks.length>=5){
+      alert("Currently we are limited to 5 stores!");
+      return;
+    }
+    if(storeLinks.includes(storeLinkInput)){
+      alert("You have already picked this store!");
+      return;
+    }
+
+    setStoreLinks([...storeLinks, storeLinkInput]);
+    console.log("Added store:", storeLinkInput);
+    console.log("Total Stores:", storeLinks.length +1);
+
+    setStoreLinkInput("");
+  };
+
+  
+
   const addToTeam=()=>{
     if(!currentPokemon){
       alert("Please choose a Pokemon first!");
@@ -66,7 +96,6 @@ export default function Home(){
   const removeFromTeam=(index: number)=>{
     const newTeam= team.filter((_, i)=> i !==index);
     console.log("Removed POkemon at:", index);
-    console.log("New Team:", newTeam.length);
     setTeam(newTeam);
   }
 
@@ -88,7 +117,7 @@ export default function Home(){
             type="text"
             value={query}
             onChange={(e)=> setQuery(e.target.value)}
-            placeholder="Enter POkemon name..."
+            placeholder="Enter Pokemon name..."
             className="flex-1 p-4 bg-transparent border-b-2 border-gray-700 focus:border-blue-500 oytline-none text-xl"/>
           <button type="submit" className="px-8 py-4 bg-blue-600 hover:bg-blue-700 font-bold uppercase transition">
             Search
@@ -136,6 +165,16 @@ export default function Home(){
               </p>
             </div>
           ))}
+          {/* <button */}
+            {/* onClick={()=>{ */}
+              {/* console.log("Testing addStorelink function"); */}
+              {/* setStoreLinkInput(""); */}
+              {/* setTimeout(()=> addStoreLink(), 100); */}
+            {/* }} */}
+            {/* className="px-4 py-2 bg-yellow-600 text-black font-bold" */}
+            {/* > */}
+              {/* Test: add test store */}
+          {/* </button> */}
           {Array(6- team.length).fill(null).map((_, index)=>(
             <div key={`empty-${index}`}
                 className="border-2 border-dasheed border-gray-700 flex items-center justify-center">
