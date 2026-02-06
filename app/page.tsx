@@ -149,6 +149,9 @@ export default function Home(){
               <p className="text-gray-400">
                 #{currentPokemon.id.toString().padStart(3, '0')}
               </p>
+              <p className="text-gray-400">
+                Color:<span className="capitalize font-semibold text-white">{currentPokemon.color}</span>
+              </p>
               </div>
               <button onClick={addToTeam} disabled={team.length>=6}
                 className="ml-auto px-6 py-3 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 disabled:cursor-not-allowed font-bold rounded transition">
